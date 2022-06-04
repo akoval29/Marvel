@@ -13,28 +13,28 @@ class RandomChar extends Component {
     }
 
     state = {
-        name: null,
-        description: null,
-        thumbnail: null,
-        homepage: null,
-        wiki: null,
+        char: {}
     }
 
     marvelService = new MarvelService();
 
+    onCharLoaded = (char) => {
+        this.setState({char}) // сhar записався як стейт
+    }
+
     updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
         this.marvelService
-            .getCharacter(id)
-            .then(res => {
-                this.setState(res)
-            })
+        // .getAllCharacters()
+        // .then(res => console.log(res));
+        .getCharacter(id)
+        .then(this.onCharLoaded)
     }
 
     // marvelService.getAllCharacters().then(res => res.data.results.forEach(elem => console.log(elem.name)));
 
     render() {
-        const {name, description, thumbnail, homepage, wiki} = this.state;
+        const {char: {name, description, thumbnail, homepage, wiki}} = this.state; //отака деструктуризація =) витягнули елементи char
         return (
             <div className="randomchar">
                 <div className="randomchar__block">
