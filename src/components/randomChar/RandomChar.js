@@ -6,7 +6,7 @@ import mjolnir from '../../resources/img/mjolnir.png';
 
 import MarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/spinner';
-import ErrorMSG from '../errorMSG../ErrorMSG';
+import ErrorMSG from '../ErrorMSG/errorMSG';
 
 class RandomChar extends Component {
     constructor(props) {
@@ -50,13 +50,18 @@ class RandomChar extends Component {
     // marvelService.getAllCharacters().then(res => res.data.results.forEach(elem => console.log(elem.name)));
 
     render() {
-        const {char, loading} = this.state;
+        const {char, loading, error} = this.state;
+        const errorMSG = error ? <ErrorMSG/> :null;
+        const spinner = loading ? <Spinner/> :null;
+        const content = !(loading || error) ? <View char={char}/> :null;
         // if(loading) {
         //     return <Spinner/>;
         
         return (
             <div className="randomchar">
-                {loading ? <Spinner/> : <View char={char}/>}
+                {errorMSG}
+                {spinner}
+                {content}
                 <div className="randomchar__static">
                     <p className="randomchar__title">
                         Random character for today!<br/>
