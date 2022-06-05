@@ -6,7 +6,7 @@ import mjolnir from '../../resources/img/mjolnir.png';
 
 import MarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/spinner';
-// import ErrorMSG from '../errorMSG../errorMSG';
+import ErrorMSG from '../errorMSG../ErrorMSG';
 
 class RandomChar extends Component {
     constructor(props) {
