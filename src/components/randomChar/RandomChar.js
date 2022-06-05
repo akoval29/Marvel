@@ -6,6 +6,7 @@ import mjolnir from '../../resources/img/mjolnir.png';
 
 import MarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/spinner';
+// import ErrorMSG from '../errorMSG../errorMSG';
 
 class RandomChar extends Component {
     constructor(props) {
@@ -16,6 +17,8 @@ class RandomChar extends Component {
     state = {
         char: {},
         loading: true,
+        error: false,
+
     }
 
     marvelService = new MarvelService();
@@ -27,6 +30,13 @@ class RandomChar extends Component {
         }) 
     }
 
+    onError = () => {
+        this.setState({
+            loading: false, //якщо виникла помилка то спіннер непотрібен
+            error: true,
+        }) 
+    }
+
     updateChar = () => {
         const id = Math.floor(Math.random() * (1011400 - 1011000) + 1011000);
         this.marvelService
@@ -34,6 +44,7 @@ class RandomChar extends Component {
         // .then(res => console.log(res));
         .getCharacter(id)
         .then(this.onCharLoaded)
+        .catch(this.onError)
     }
 
     // marvelService.getAllCharacters().then(res => res.data.results.forEach(elem => console.log(elem.name)));
