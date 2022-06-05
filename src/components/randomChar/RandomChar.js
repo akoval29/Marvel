@@ -21,7 +21,10 @@ class RandomChar extends Component {
     marvelService = new MarvelService();
 
     onCharLoaded = (char) => {
-        this.setState({char}) // сhar записався як стейт
+        this.setState({
+            char, // сhar записався як стейт
+            loading: false //як тільки дані зявилися загрузка стає в false
+        }) 
     }
 
     updateChar = () => {
