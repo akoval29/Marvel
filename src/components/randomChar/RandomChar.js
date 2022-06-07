@@ -1,18 +1,21 @@
 import { Component } from 'react/cjs/react.production.min';
 
 import './randomChar.scss';
-import thor from '../../resources/img/thor.jpeg';
+// import thor from '../../resources/img/thor.jpeg';
 import mjolnir from '../../resources/img/mjolnir.png';
 
 import MarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/spinner';
 import ErrorMSG from '../ErrorMSG/errorMSG';
 
+
+
 class RandomChar extends Component {
-    constructor(props) {
-        super(props);
-        this.updateChar();
-    }
+    // constructor(props) {          //непотрібен
+    //     console.log('constructor');
+    //     super(props);
+        
+    // }
 
     state = {
         char: {},
@@ -22,6 +25,21 @@ class RandomChar extends Component {
     }
 
     marvelService = new MarvelService();
+
+    componentDidMount() {
+        this.updateChar();
+        // this.timerID = setInterval(this.updateChar, 5000);   // таймер роллить запроси randomChar, фіксим баг з подвійними запросами
+        console.log('mount');
+    }
+
+    componentDidUpdate() {
+        console.log('update');
+    }
+
+    componentWillUnmount() {
+        // clearInterval(this.timerID);  // фіксим баг з подвійними запросами ТАЙМЕР
+        console.log('UNmount');
+    }
 
     onCharLoaded = (char) => {
         this.setState({
@@ -70,7 +88,7 @@ class RandomChar extends Component {
                     <p className="randomchar__title">
                         Or choose another one
                     </p>
-                    <button className="button button__main">
+                    <button onClick={this.toggleRandomChar} className="button button__main">
                         <div className="inner">try it</div>
                     </button>
                     <img src={mjolnir} alt="mjolnir" className="randomchar__decoration"/>
