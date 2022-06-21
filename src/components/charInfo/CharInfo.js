@@ -23,9 +23,13 @@ class CharInfo extends Component {
         }
     }
 
+    // componentDidCatch(err) {
+
+    // }
+
     componentDidMount() {
         this.updateChar();
-        this.rrrrrrr();  // 66666666666666666666666666666666
+        
     }
 
     updateChar = () => {
