@@ -25,6 +25,7 @@ class CharInfo extends Component {
 
     componentDidMount() {
         this.updateChar();
+        this.rrrrrrr();  // 66666666666666666666666666666666
     }
 
     updateChar = () => {
@@ -39,11 +40,13 @@ class CharInfo extends Component {
             .getCharacter(charId)
             .then(this.onCharLoaded)
             .catch(this.onError);
+            
     }
 
     onCharLoading = (char) => {
         this.setState({
-            loading: true //як тільки дані зявилися загрузка стає в false
+            loading: true, //як тільки дані зявилися загрузка стає в false
+            
         }) 
     }
 
