@@ -36,7 +36,14 @@ class App extends Component {
                 <AppHeader/>
                 <main>
                     {this.state.showRandomChar ? <RandomChar/> : null}
-                    <button onClick={this.toggleRandomChar}>{this.state.buttonState ? '< Hide this >': '< Show this >'}</button>
+                    
+                    <div className="randomchar__btns" onClick={this.toggleRandomChar}>
+                    <a href={this.toggleRandomChar} className="button button__main">
+                        <div className="inner">{this.state.buttonState ? 'Hide this': 'Show this'}</div>
+                    </a>
+                    </div> 
+                    
+                    {/* <button className="button button__secondary" onClick={this.toggleRandomChar}>{this.state.buttonState ? 'Hide this': 'Show this'}</button> */}
                     <div className="char__content">
                         <CharList onCharSelected={this.onCharSelected}/>
                         <ErrorBoundary>
