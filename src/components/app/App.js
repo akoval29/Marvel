@@ -1,4 +1,4 @@
-import { Component } from "react/cjs/react.production.min";
+import { useState } from "react";
 
 import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
@@ -7,55 +7,38 @@ import CharInfo from "../charInfo/CharInfo";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 import decoration from '../../resources/img/vision.png';
 
-class App extends Component {
-    state = {
-        showRandomChar: true,
-        buttonState: true,
-        selectedChar: null,
+const App = () => {
+    const [selectedChar, setChar] = useState(null);
 
+    let [showRandomChar, setRandomChar]= useState(true);
+
+    const onCharSelected = (id) => {
+        setChar(id);
     }
 
-    onCharSelected = (id) => {
-        this.setState({
-            selectedChar: id,
-        })
-    }
-
-    toggleRandomChar = () => {
-        this.setState((state) => {
-            return {
-                showRandomChar: !state.showRandomChar,
-                buttonState: !state.buttonState,
-            }
-        })
-    }
-
-    render () {
-        return (
-            <div className="app">
-                <AppHeader/>
-                <main>
-                    {this.state.showRandomChar ? <RandomChar/> : null}
-                    
-                    <div className="randomchar__btns" onClick={this.toggleRandomChar}>
-                    <a href={this.toggleRandomChar} className="button button__main">
-                        <div className="inner">{this.state.buttonState ? 'Hide this': 'Show this'}</div>
-                    </a>
-                    </div> 
-                    
-                    {/* <button className="button button__secondary" onClick={this.toggleRandomChar}>{this.state.buttonState ? 'Hide this': 'Show this'}</button> */}
-                    <div className="char__content">
-                        <CharList onCharSelected={this.onCharSelected}/>
-                        <ErrorBoundary>
-                            <CharInfo charId={this.state.selectedChar}/>
-                        </ErrorBoundary>
-                        
-                    </div>
-                    <img className="bg-decoration" src={decoration} alt="vision"/>
-                </main>
-            </div>
-        )
-    }
+    return (
+        <div className="app">
+            <AppHeader/>
+            <main>
+                {showRandomChar ? <RandomChar/> : null}
+                
+                <div className="randomchar__btns" onClick={() => setRandomChar(showRandomChar = !showRandomChar)}>
+                <a href={null} className="button button__main">
+                    <div className="inner">{showRandomChar ? 'Hide this': 'Show this'}</div>
+                </a>
+                </div> 
+                
+                <div className="char__content">
+                    <CharList onCharSelected={onCharSelected}/>
+                    <ErrorBoundary>
+                        <CharInfo charId={selectedChar}/>
+                    </ErrorBoundary>
+                </div>
+                <img className="bg-decoration" src={decoration} alt="vision"/>
+            </main>
+        </div>
+    )
+    
 }
 
 export default App;
