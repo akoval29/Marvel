@@ -1,4 +1,4 @@
-import { Component } from 'react/cjs/react.production.min';
+import {useEffect, useState, useRef} from 'react';
 import PropTypes from 'prop-types';
 
 import MarvelService from '../../services/MarvelService';
@@ -8,143 +8,148 @@ import Skeleton from '../skeleton/Skeleton';
 
 import './charInfo.scss';
 
-class CharInfo extends Component {
-    state = {
-        char: null,
-        loading: false,
-        error: false,
-        // showMore: false,
-        // buttonShowMore: true,
+const CharInfo = (props) => {
+  const [char, setChar] = useState(null);
+  const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  // const [loaded, setLoaded] = useState(false);
+  
+
+  const marvelService = new MarvelService();
+
+  useEffect(() => {
+    
+      updateChar();
+    
+  }, [props.charId])
+
+  // componentDidUpdate(prefProps, prefState){
+  //     if (this.props.charId !== prefProps.charId) {
+  //         this.updateChar();
+  //     }
+  // }
+
+  // componentDidCatch(err) {
+
+  // }
+
+  // componentDidMount() {
+  //     this.updateChar();
+      
+  // }
+
+  const updateChar = () => {
+    const {charId} = props;
+    if(!charId) {
+      return;
     }
+    
+    onCharLoading();
 
-    marvelService = new MarvelService();
+    marvelService
+      .getCharacter(charId)
+      .then(onCharLoaded)
+      .catch(onError);
+  }
 
-    componentDidUpdate(prefProps, prefState){
-        if (this.props.charId !== prefProps.charId) {
-            this.updateChar();
-        }
-    }
+  // setLoading = (char) => (loading => true)  //як тільки дані зявилися загрузка стає в false
+  // setLoaded = (char) => (loading => false)
 
-    // componentDidCatch(err) {
 
-    // }
+  const onCharLoaded = (char) => {
+    setLoading(false);
+    setChar(char);
+  }
+  const onCharLoading = () => {
+    setLoading(true)
+  }
 
-    componentDidMount() {
-        this.updateChar();
-        
-    }
 
-    updateChar = () => {
-        const {charId} = this.props;
-        if(!charId) {
-            return;
-        }
-        
-        this.onCharLoading();
+  const onError = () => {
+    setError (loading => false);
+    setError (error => true);    
+  }
+  
+    
+    
+  
 
-        this.marvelService
-            .getCharacter(charId)
-            .then(this.onCharLoaded)
-            .catch(this.onError);
-            
-    }
 
-    onCharLoading = (char) => {
-        this.setState({
-            loading: true, //як тільки дані зявилися загрузка стає в false
-            
-        }) 
-    }
+  // onButtonShowMore = () => {
+  //     this.setState((state) => {
+  //         return {
+  //             showMore: !state.showMore,
+  //             buttonShowMore: !state.buttonShowMore,
+  //         }
+  //     })
+  // }
 
-    onCharLoaded = (char) => {
-        this.setState({
-            char, // сhar записався як стейт
-            loading: false //як тільки дані зявилися загрузка стає в false
-        }) 
-    }
+  // onShowMore = () => {
+  //     this.state.showMore ? <View/> : <View/>
+  // }
 
-    onError = () => {
-        this.setState({
-            loading: false, //якщо виникла помилка то спіннер непотрібен
-            error: true,
-        })
-    }
-
-    // onButtonShowMore = () => {
-    //     this.setState((state) => {
-    //         return {
-    //             showMore: !state.showMore,
-    //             buttonShowMore: !state.buttonShowMore,
-    //         }
-    //     })
-    // }
-
-    // onShowMore = () => {
-    //     this.state.showMore ? <View/> : <View/>
-    // }
-
-    render() {
-        const {char, loading, error} = this.state;
-        const skeleton = char || loading || error ? null : <Skeleton/>
-        const errorMSG = error ? <ErrorMSG/> :null;
-        const spinner = loading ? <Spinner/> :null;
-        const content = !(loading || error || !char) ? <View char={char}/> : null;
-        return (
-            <div className="char__info">
-                {skeleton}
-                {errorMSG}
-                {spinner}
-                {content}
-                {/* <button onClick={this.onShowMore}>{this.state.buttonShowMore ? '< Show more >': '< Show less >'}</button> */}
-            </div>
-        )
-    }
+  
+      // const {char, loading, error} = this.state;
+      const skeleton = char || loading || error ? null : <Skeleton/>
+      const errorMSG = error ? <ErrorMSG/> :null;
+      const spinner = loading ? <Spinner/> :null;
+      const content = !(loading || error || !char) ? <View char={char}/> : null;
+      return (
+          <div className="char__info">
+              {skeleton}
+              {errorMSG}
+              {spinner}
+              {content}
+              {/* <button onClick={this.onShowMore}>{this.state.buttonShowMore ? '< Show more >': '< Show less >'}</button> */}
+          </div>
+      )
+  
 
 }
 const View = ({char}) => {
-    const {name, description, thumbnail, homepage, wiki, comics} = char;
-    let imgStyle = {'objectFit' : 'cover'};
-    if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
-        imgStyle = {'objectFit' : 'contain'};
-    }
-    return(
-        <>
-        <div className="char__basics">
-            <img src={thumbnail} alt={name} style={imgStyle}/>
-            <div>
-                <div className="char__info-name">{name}</div>
-                <div className="char__btns">
-                    <a href={homepage} className="button button__main">
-                        <div className="inner">Homepage</div>
-                    </a>
-                    <a href={wiki} className="button button__secondary">
-                        <div className="inner">Wiki</div>
-                    </a>
-                </div>
-            </div>
-        </div>
-        <div className="char__descr">
-            {description}
-        </div>
-        <div className="char__comics">Comics:</div>
-        <ul className="char__comics-list">
-            {comics.length > 0 ? null : "No comics yet"}
-            {
-                comics.map((item, i) => {
-                    // {this.state.showMore ? null : if (i > 9) return}
-                    // eslint-disable-next-line
-                    if (i > 9) return
-                    return (
-                        <li key={i} className="char__comics-item">
-                        {item.name}
-                        </li>
-                    )
-                })
-            }
-        </ul>
-        </>
-    )
-    
+  const {name, description, thumbnail, homepage, wiki, comics} = char;
+  let imgStyle = {'objectFit' : 'cover'};
+  if (thumbnail === 'http://i.annihil.us/u/prod/marvel/i/mg/b/40/image_not_available.jpg') {
+      imgStyle = {'objectFit' : 'contain'};
+  }
+  return(
+      <>
+      <div className="char__basics">
+          <img src={thumbnail} alt={name} style={imgStyle}/>
+          <div>
+              <div className="char__info-name">{name}</div>
+              <div className="char__btns">
+                  <a href={homepage} className="button button__main">
+                      <div className="inner">Homepage</div>
+                  </a>
+                  <a href={wiki} className="button button__secondary">
+                      <div className="inner">Wiki</div>
+                  </a>
+              </div>
+          </div>
+      </div>
+      <div className="char__descr">
+          {description}
+      </div>
+      <div className="char__comics">Comics:</div>
+      <ul className="char__comics-list">
+          {comics.length > 0 ? null : "No comics yet"}
+          {
+              comics.map((item, i) => {
+                  // {this.state.showMore ? null : if (i > 9) return}
+                  // eslint-disable-next-line
+                  if (i > 9) return
+                  return (
+                      <li key={i} className="char__comics-item">
+                      {item.name}
+                      </li>
+                  )
+              })
+          }
+      </ul>
+      </>
+  )
+  
 }
 
 CharInfo.propTypes = {
