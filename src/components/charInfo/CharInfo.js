@@ -28,9 +28,9 @@ const CharInfo = (props) => {
     onCharLoading();
 
     marvelService
-      .getCharacter(charId)
-      .then(onCharLoaded)
-      .catch(onError);
+    .getCharacter(charId)
+    .then(onCharLoaded)
+    .catch(onError);
   }
 
   const onCharLoaded = (char) => {
@@ -91,7 +91,6 @@ const View = ({char}) => {
       {comics.length > 0 ? null : "No comics yet"}
       {
         comics.map((item, i) => {
-          // {this.state.showMore ? null : if (i > 9) return}
           // eslint-disable-next-line
           if (i > 9) return
           return (
