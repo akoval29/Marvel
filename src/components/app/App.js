@@ -16,6 +16,8 @@ const App = () => {
     setChar(id);
   }
 
+// privat
+
   return (
     <div className="app">
       <AppHeader/>
