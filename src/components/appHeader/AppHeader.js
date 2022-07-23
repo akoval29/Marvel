@@ -5,7 +5,8 @@ const AppHeader = () => {
     <header className="app__header">
       <h1 className="app__title">
         <a href="http://localhost:3000/">
-          <span>Marvel</span> information portal
+          {/* <span>Marvel</span> information portal  */}
+          <span>Marvel information portal v.3: </span> Кастомні хуки
         </a>
       </h1>
       <nav className="app__menu">
@@ -20,3 +21,5 @@ const AppHeader = () => {
 }
 
 export default AppHeader;
+
+

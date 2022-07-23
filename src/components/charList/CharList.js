@@ -1,59 +1,43 @@
-import {useState, useEffect, useRef} from "react";
+import {useState, useEffect, useRef} from 'react';
 import PropTypes from 'prop-types';
+
 import Spinner from '../spinner/spinner';
 import ErrorMSG from '../ErrorMSG/errorMSG';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import './charList.scss';
 
 const CharList = (props) => {
 
   const [charList, setCharList] = useState([]);
-  const [error, setError] = useState(false);
-  const [offset, setOffset] = useState(210);
-  const [loading, setLoading] = useState(true);
   const [newItemLoading, setNewItemLoading] = useState(false);
+  const [offset, setOffset] = useState(210);
   const [charEnded, setCharEnded] = useState(false);
-  
-  const marvelService = new MarvelService();
-  
+
+  const {loading, error, getAllCharacters} = useMarvelService();
+
   useEffect(() => {
-    onRequest();
+    onRequest(offset, true);
   }, [])
 
-  const onRequest = (offset)=> {
-    onCharListLoading();
-    marvelService.getAllCharacters(offset)
-    .then(onCharListLoaded)
-    .catch(onError)
-  }
-
-  const onCharListLoading = () => {
-    setNewItemLoading(true);
+  const onRequest = (offset, initial) => {
+    initial ? setNewItemLoading(false) : setNewItemLoading(true);
+    getAllCharacters(offset)
+      .then(onCharListLoaded)
   }
 
   const onCharListLoaded = (newCharList) => {
     let ended = false;
-    if (newCharList < 9) {
+    if (newCharList.length < 9) {
       ended = true;
     }
 
-    setCharList (charList => [...charList, ...newCharList]);
-    setLoading (loading => false);  // або як варіант setLoading (false);
-    setNewItemLoading (newItemLoading => false);
-    setOffset (offset => offset + 9);
-    setCharEnded (charEnded => ended);
-  }
-
-  const onError = () => {
-    setError(true);
-    setLoading (loading => false);
+    setCharList(charList => [...charList, ...newCharList]);
+    setNewItemLoading(newItemLoading => false);
+    setOffset(offset => offset + 9);
+    setCharEnded(charEnded => ended);
   }
 
   const itemRefs = useRef([]);
-
-  // setRef = (ref) => {
-  //   itemRefs.push(ref);
-  // }
 
   const focusOnItem = (id) => {
     itemRefs.current.forEach(item => item.classList.remove('char__item_selected'));
@@ -61,8 +45,7 @@ const CharList = (props) => {
     itemRefs.current[id].focus();
   }
 
-
-  // Этот метод создан для оптимизации,
+  // Этот метод создан для оптимизации, 
   // чтобы не помещать такую конструкцию в метод render
   function renderItems(arr) {
     const items =  arr.map((item, i) => {
@@ -73,44 +56,43 @@ const CharList = (props) => {
       
       return (
         <li 
-        className="char__item"
-        tabIndex={0}
-        ref={el => itemRefs.current[i] = el}
-        key={item.id}
-        onClick={() => {
-          props.onCharSelected(item.id);
-          focusOnItem(i);
-        }}
-        onKeyPress={(e) => {
-          if (e.key === ' ' || e.key === "Enter") {
+          className="char__item"
+          tabIndex={0}
+          ref={el => itemRefs.current[i] = el}
+          key={item.id}
+          onClick={() => {
             props.onCharSelected(item.id);
             focusOnItem(i);
-          }
-        }}>
+          }}
+          onKeyPress={(e) => {
+            if (e.key === ' ' || e.key === "Enter") {
+              props.onCharSelected(item.id);
+              focusOnItem(i);
+            }
+          }}>
           <img src={item.thumbnail} alt={item.name} style={imgStyle}/>
           <div className="char__name">{item.name}</div>
         </li>
-        )
-      });
-
-      // А эта конструкция вынесена для центровки спиннера/ошибки
-      return (
-        <ul className="char__grid">
-          {items}
-        </ul>
       )
+    });
+    // А эта конструкция вынесена для центровки спиннера/ошибки
+    return (
+      <ul className="char__grid">
+        {items}
+      </ul>
+    )
   }
   
   const items = renderItems(charList);
-  const errorMSG = error ? <ErrorMSG/> : null;
-  const spinner = loading ? <Spinner/> : null;
-  const content = !(loading || error) ? items : null;
+
+  const errorMessage = error ? <ErrorMSG/> : null;
+  const spinner = loading && !newItemLoading ? <Spinner/> : null;
 
   return (
     <div className="char__list">
-      {errorMSG}
+      {errorMessage}
       {spinner}
-      {content}
+      {items}
       <button 
         className="button button__main button__long"
         disabled={newItemLoading}

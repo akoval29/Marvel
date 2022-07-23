@@ -6,6 +6,8 @@ import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
 import decoration from '../../resources/img/vision.png';
+import AppBanner from "../appBanner/AppBanner";
+import ComicsList from "../comicsList/ComicsList";
 
 const App = () => {
   const [selectedChar, setChar] = useState(null);
@@ -24,7 +26,7 @@ const App = () => {
         
         <div className="randomchar__btns" onClick={() => setRandomChar (showRandomChar = !showRandomChar)}>
         <a href={null} className="button button__main">
-          <div className="inner">{showRandomChar ? 'Hide this': 'Show this'}</div>
+          <div className="inner">{showRandomChar ? 'HIDE': 'SHOW'}</div>
         </a>
         </div>
         
@@ -35,6 +37,8 @@ const App = () => {
           </ErrorBoundary>
         </div>
         <img className="bg-decoration" src={decoration} alt="vision"/>
+        <AppBanner/>
+        <ComicsList/>
       </main>
     </div>
   )
