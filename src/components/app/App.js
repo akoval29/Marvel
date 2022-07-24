@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { BrowserRouter as Router, Route, Switch} from "react-router-dom";
 
 import AppHeader from "../appHeader/AppHeader";
 import RandomChar from "../randomChar/RandomChar";
@@ -19,28 +20,37 @@ const App = () => {
   }
 
   return (
-    <div className="app">
+    <Router>
+      <div className="app">
       <AppHeader/>
-      <main>
-        {showRandomChar ? <RandomChar/> : null}
-        
-        <div className="randomchar__btns" onClick={() => setRandomChar (showRandomChar = !showRandomChar)}>
-        <a href={null} className="button button__main">
-          <div className="inner">{showRandomChar ? 'HIDE': 'SHOW'}</div>
-        </a>
-        </div>
-        
-        <div className="char__content">
-          <CharList onCharSelected={onCharSelected}/>
-          <ErrorBoundary>
-            <CharInfo charId={selectedChar}/>
-          </ErrorBoundary>
-        </div>
-        <img className="bg-decoration" src={decoration} alt="vision"/>
-        <AppBanner/>
-        <ComicsList/>
-      </main>
-    </div>
+        <main>
+          <Switch>
+            <Route exact path='/'>
+              {showRandomChar ? <RandomChar/> : null}
+              
+              <div className="randomchar__btns" onClick={() => setRandomChar (showRandomChar = !showRandomChar)}>
+              <a href={null} className="button button__main">
+                <div className="inner">{showRandomChar ? 'HIDE': 'SHOW'}</div>
+              </a>
+              </div>
+              
+              <div className="char__content">
+                <CharList onCharSelected={onCharSelected}/>
+                <ErrorBoundary>
+                  <CharInfo charId={selectedChar}/>
+                </ErrorBoundary>
+              </div>
+              
+              <img className="bg-decoration" src={decoration} alt="vision"/>
+            </Route>
+            <Route exact path='/comics'>
+              <AppBanner/>
+              <ComicsList/>
+            </Route>
+          </Switch>
+        </main>
+      </div>
+    </Router>
   )
 }
 
