@@ -1,4 +1,6 @@
 import {useState, useEffect} from 'react';
+import { Link } from 'react-router-dom';
+
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../spinner/spinner';
 import ErrorMSG from '../ErrorMSG/errorMSG';
@@ -36,14 +38,20 @@ const ComicsList = () => {
   }
 
   function renderItems (arr) {
-    const items = arr.map((item, i) => {
+    // цей i в коді був для того щоб marvel.com не давав дублікати
+    // const items = arr.map((item) => {
+    
+      const items = arr.map((item, i) => {
       return (
+        // аналогічно - попередній коментар
+        // <li className="comics__item" key={item.id}>
+
         <li className="comics__item" key={i}>
-          <a href="#">
+          <Link to={`/comics/${item.id}`}>
             <img src={item.thumbnail} alt={item.title} className="comics__item-img"/>
             <div className="comics__item-name">{item.title}</div>
             <div className="comics__item-price">{item.price}</div>
-          </a>
+          </Link>
         </li>
       )
   })
