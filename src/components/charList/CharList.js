@@ -26,6 +26,12 @@ const CharList = (props) => {
   }
 
   const onCharListLoaded = (newCharList) => {
+
+    // // ПРИКЛАД РОБОТИ ДИНАМІЧНОГО ІМПОРТУ № 2
+    // const onCharListLoaded = async (newCharList) => {
+    // const {logger, logger2} = await import ('./someFunct');
+    // logger2();
+
     let ended = false;
     if (newCharList.length < 9) {
       ended = true;
@@ -87,6 +93,20 @@ const CharList = (props) => {
 
   const errorMessage = error ? <ErrorMSG/> : null;
   const spinner = loading && !newItemLoading ? <Spinner/> : null;
+
+  // // ПРИКЛАД РОБОТИ ДИНАМІЧНОГО ІМПОРТУ № 1
+  // if (loading) {
+  //   import ('./someFunct')
+  //     .then(obj => obj.logger())
+  //     .catch();
+  // }
+
+  // // ПРИКЛАД РОБОТИ ДИНАМІЧНОГО ІМПОРТУ № 3
+  // if (loading) {
+  //   import ('./someFunct')
+  //     .then(obj => obj.default())
+  //     .catch();
+  // }
 
   return (
     <div className="char__list">
