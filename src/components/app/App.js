@@ -18,7 +18,6 @@ const TestPage = lazy(() => import('../pages/Test/Test'));
 
 
 const App = () => {
-
   return (
     <Router>
       <div className="app">

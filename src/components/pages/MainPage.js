@@ -4,6 +4,7 @@ import RandomChar from "../randomChar/RandomChar";
 import CharList from "../charList/CharList";
 import CharInfo from "../charInfo/CharInfo";
 import ErrorBoundary from "../errorBoundary/ErrorBoundary";
+import CharSearchForm from "../CharSearchForm/CharSearchForm";
 
 import decoration from '../../resources/img/vision.png';
 
@@ -22,15 +23,23 @@ const MainPage = () => {
       {showRandomChar ? <RandomChar/> : null}
       
       <div className="randomchar__btns" onClick={() => setRandomChar (showRandomChar = !showRandomChar)}>
-      <a href={null} className="button button__main">
-        <div className="inner">{showRandomChar ? 'HIDE': 'SHOW'}</div>
-      </a>
+          
+        <a className="button button__main">
+          <div 
+            className="inner">{showRandomChar ? 'HIDE': 'SHOW'}
+          </div>
+        </a>
       </div>
       
       <div className="char__content">
         <CharList onCharSelected={onCharSelected}/>
+
         <ErrorBoundary>
           <CharInfo charId={selectedChar}/>
+        </ErrorBoundary>
+
+        <ErrorBoundary>
+          <CharSearchForm/>
         </ErrorBoundary>
       </div>
       

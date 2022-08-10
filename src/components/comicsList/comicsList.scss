@@ -1,36 +1,57 @@
-.comics {
-    &__list {
-        margin-top: 45px;
+@import '../../style/variables.scss';
+
+.char {
+    &__content {
+        margin-top: 50px;
+        display: grid;
+        grid-template-columns: 650px 425px;
+        column-gap: 25px;
+        align-items: start;
     }
     &__grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, 225px);
-        justify-content: space-between;
-        row-gap: 55px;
+        grid-template-columns: repeat(3, 200px);
+        column-gap: 25px;
+        row-gap: 30px;
     }
     &__item {
+        width: 200px;
+        height: 318px;
+        background-color: $dark;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, .25);
+        padding: 15px;
+        cursor: pointer;
         transition: 0.3s transform;
-        &-img {
-            box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.25);
-            width: 225px;
-            height: 345px;
+        img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            transform: translate(-15px, -15px);
         }
-        &-name {
-            margin-top: 10px;
-            font-weight: bold;
-            font-size: 14px;
-            line-height: 18px;
+        &_selected {
+            box-shadow: 0 5px 20px $main-color;
+            transform: translateY(-8px);
         }
-        &-price {
-            margin-top: 5px;
-            font-weight: bold;
-            font-size: 14px;
-            line-height: 18px;
-            color: rgba(0, 0, 0, 0.6);
-            text-transform: uppercase;
+        &-enter {
+            opacity: 0;
         }
-        &:hover {
-            transform: translateY(-5px);
+        &-enter-active {
+            opacity: 1;
+            transition: opacity 500ms ease-in;
+        }
+        &-exit {
+            opacity: 1;
+        }
+        &-exit-active {
+            opacity: 0;
+            transition: opacity 500ms ease-in;
         }
     }
+    &__name {
+        font-weight: bold;
+        font-size: 22px;
+        line-height: 29px;
+        text-transform: uppercase;
+        color: #fff;
+    } 
 }
