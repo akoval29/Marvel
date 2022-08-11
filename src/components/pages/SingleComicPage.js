@@ -1,64 +1,45 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 
 import useMarvelService from '../../services/MarvelService';
-import Spinner from '../spinner/spinner';
-import ErrorMSG from '../ErrorMSG/errorMSG';
-import AppBanner from '../appBanner/AppBanner'
+import AppBanner from "../appBanner/AppBanner";
+import setContent from '../../utils/setContent';
 
-import './singleComicPage.scss';
-// import xMen from '../../resources/img/x-men.png';
+const SinglePage = ({Component, dataType}) => {
+        const {id} = useParams();
+        const [data, setData] = useState(null);
+        const {getComic, getCharacter, clearError, process, setProcess} = useMarvelService();
 
-const SingleComicPage = () => {
-  const {comicId} = useParams();
-  const [comic, setComic] = useState(null);
-  const {loading, error, getComic, clearError} = useMarvelService();
+        useEffect(() => {
+            updateData();
+            // eslint-disable-next-line
+        }, [id])
 
+        const updateData = () => {
+            clearError();
 
-  useEffect(() => {
-    updateComic()
-  }, [comicId])
+            switch (dataType) {
+                case 'comic':
+                    getComic(id).then(onDataLoaded).then(() => setProcess('confirmed'));
+                    break;
+                case 'character':
+                    getCharacter(id).then(onDataLoaded).then(() => setProcess('confirmed'));
+                    break;
+                default:
+                    return;
+            }
+        }
 
-  const updateComic = () => {
-    clearError();
-    getComic(comicId)
-      .then(onComicLoaded)
-  }
+        const onDataLoaded = (data) => {
+            setData(data);
+        }
 
-  const onComicLoaded = (comic) => {
-    setComic(comic);
-  }
-
-  const errorMessage = error ? <ErrorMSG/> : null;
-  const spinner = loading ? <Spinner/> : null;
-  const content = !(loading || error || !comic) ? <View comic={comic}/> : null;
-
-  return (
-    <>
-      <AppBanner/>
-      {errorMessage}
-      {spinner}
-      {content}
-    </>
-  )
+        return (
+            <>
+                <AppBanner/>
+                {setContent(process, Component, data)}
+            </>
+        )
 }
 
-const View = ({comic}) => {
-  const {title, description, pageCount, thumbnail, Language, price} = comic;
-
-  return (
-    <div className="single-comic">
-      <img src={thumbnail} alt={title} className="single-comic__img"/>
-      <div className="single-comic__info">
-        <h2 className="single-comic__name">{title}</h2>
-        <p className="single-comic__descr">{description}</p>
-        <p className="single-comic__descr">{pageCount}</p>
-        <p className="single-comic__descr">Language: {Language}</p>
-        <div className="single-comic__price">{price}</div>
-      </div>
-      <Link to="/comics" className="single-comic__back">Back to all</Link>
-    </div>
-  )
-}
-
-export default SingleComicPage;
+export default SinglePage;

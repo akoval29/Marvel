@@ -22,7 +22,6 @@ const setContent = (process, Component, newItemLoading) => {
   }
 }
 
-
 const ComicsList = () => {
 
   const [comicsList, setComicsList] = useState([]);
