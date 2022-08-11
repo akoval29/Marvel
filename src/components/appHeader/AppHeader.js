@@ -6,9 +6,8 @@ const AppHeader = () => {
     <header className="app__header">
       <h1 className="app__title">
         <Link to='/'>
-          {/* <span>Marvel</span> information portal  */}
-          <span>Marvel information portal v.3: </span> Кастомні хуки
-        </Link>
+          <span>Marvel</span> information portal 
+          </Link>
       </h1>
       <nav className="app__menu">
         <ul>
