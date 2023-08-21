@@ -3,9 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@testing-library/jest-dom": "^6.0.1",
-    "@testing-library/react": "^14.0.0",
-    "@testing-library/user-event": "^14.4.3",
     "bootstrap": "^5.3.1",
     "formik": "^2.4.3",
     "prop-types": "^15.8.1",
@@ -16,20 +13,16 @@
     "react-router-dom": "^6.15.0",
     "react-scripts": "5.0.1",
     "react-transition-group": "^4.4.5",
-    "serve": "^14.2.1",
     "web-vitals": "^3.4.0",
     "yup": "^1.2.0"
   },
   "scripts": {
     "dev": "react-scripts start",
-    "start11111": "serve -s build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject",
-    "heroku-postbuild": "npm run build"
+    "eject": "react-scripts eject"
   },
-  
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -49,6 +42,9 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.0.1",
+    "@testing-library/react": "^14.0.0",
+    "@testing-library/user-event": "^14.4.3",
     "sass": "^1.66.1"
   }
 }
