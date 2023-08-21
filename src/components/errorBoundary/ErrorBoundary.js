@@ -3,8 +3,8 @@ import ErrorMSG from "../ErrorMSG/errorMSG";
 
 class ErrorBoundary extends Component {
   state = {
-    error: false
-  }
+    error: false,
+  };
 
   // static getDerivedStateFromError(error) {
   //     return {error: true};
@@ -13,13 +13,13 @@ class ErrorBoundary extends Component {
   componentDidCatch(error, errorInfo) {
     console.log(error, errorInfo);
     this.setState({
-      error: true
-    })
+      error: true,
+    });
   }
 
   render() {
-    if(this.state.error) {
-      return <ErrorMSG/>
+    if (this.state.error) {
+      return <ErrorMSG />;
     }
     return this.props.children;
   }
